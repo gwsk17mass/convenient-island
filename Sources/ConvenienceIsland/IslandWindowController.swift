@@ -114,33 +114,39 @@ final class IslandWindowController: NSWindowController {
         let center = NotificationCenter.default
         observers.append(
             center.addObserver(forName: .islandExpansionChanged, object: nil, queue: .main) { [weak self] _ in
-                Task { @MainActor in self?.transitionExpansion() }
+                guard let self else { return }
+                Task { @MainActor in self.transitionExpansion() }
             }
         )
         observers.append(
             center.addObserver(forName: .islandPositionChanged, object: nil, queue: .main) { [weak self] _ in
-                Task { @MainActor in self?.moveWindow(animated: true) }
+                guard let self else { return }
+                Task { @MainActor in self.moveWindow(animated: true) }
             }
         )
         observers.append(
             center.addObserver(forName: .islandRequestSnap, object: nil, queue: .main) { [weak self] _ in
-                Task { @MainActor in self?.snapToNearestPosition() }
+                guard let self else { return }
+                Task { @MainActor in self.snapToNearestPosition() }
             }
         )
         observers.append(
             center.addObserver(forName: .islandPreferredSizeChanged, object: nil, queue: .main) { [weak self] _ in
-                Task { @MainActor in self?.moveWindow(animated: true) }
+                guard let self else { return }
+                Task { @MainActor in self.moveWindow(animated: true) }
             }
         )
         observers.append(
             center.addObserver(forName: .islandCustomSizeChanged, object: nil, queue: .main) { [weak self] _ in
-                Task { @MainActor in self?.moveWindow(animated: true) }
+                guard let self else { return }
+                Task { @MainActor in self.moveWindow(animated: true) }
             }
         )
         observers.append(
             center.addObserver(forName: .islandConfigurationModeChanged, object: nil, queue: .main) { [weak self] notification in
                 guard let mode = notification.object as? IslandConfigurationMode, mode == .none else { return }
-                Task { @MainActor in self?.moveWindow(animated: true) }
+                guard let self else { return }
+                Task { @MainActor in self.moveWindow(animated: true) }
             }
         )
         observers.append(

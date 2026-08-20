@@ -662,8 +662,9 @@ final class IslandStore: ObservableObject {
     private func startClipboardMonitor() {
         clipboardTimer?.invalidate()
         clipboardTimer = Timer.scheduledTimer(withTimeInterval: 0.65, repeats: true) { [weak self] _ in
+            guard let self else { return }
             Task { @MainActor in
-                self?.pollClipboard()
+                self.pollClipboard()
             }
         }
     }
@@ -1335,8 +1336,9 @@ final class IslandStore: ObservableObject {
     private func startNativeRecordingClock() {
         recordingTimer?.invalidate()
         let timer = Timer(timeInterval: 0.25, repeats: true) { [weak self] _ in
+            guard let self else { return }
             Task { @MainActor in
-                guard let self, self.isRecording else { return }
+                guard self.isRecording else { return }
                 if !self.isRecordingPaused {
                     self.recordingElapsed += 0.25
                 }
@@ -1407,7 +1409,8 @@ final class IslandStore: ObservableObject {
         refreshSystemVoiceMemos()
         voiceMemosRefreshTimer?.invalidate()
         let timer = Timer(timeInterval: 8, repeats: true) { [weak self] _ in
-            Task { @MainActor in self?.refreshSystemVoiceMemos() }
+            guard let self else { return }
+            Task { @MainActor in self.refreshSystemVoiceMemos() }
         }
         RunLoop.main.add(timer, forMode: .common)
         voiceMemosRefreshTimer = timer
@@ -1774,8 +1777,8 @@ final class IslandStore: ObservableObject {
             process.standardError = logHandle
             process.terminationHandler = { [weak self] completedProcess in
                 try? logHandle.close()
+                guard let self else { return }
                 Task { @MainActor in
-                    guard let self else { return }
                     self.transcriptionProcesses[item.id] = nil
                     let textURL = outputPrefix.appendingPathExtension("txt")
                     if completedProcess.terminationStatus == 0,
