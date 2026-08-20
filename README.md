@@ -29,19 +29,19 @@ swift build
 Для создания обычного приложения:
 
 ```sh
-./scripts/build-app.sh
+zsh scripts/build-app.sh
 ```
 
 Скрипт ожидает Python-окружение `.venv-transcribe` с `mlx-whisper`. Его можно переопределить:
 
 ```sh
-CONVENIENCE_ISLAND_TRANSCRIBER_PYTHON=/path/to/python3 ./scripts/build-app.sh
+CONVENIENCE_ISLAND_TRANSCRIBER_PYTHON=/path/to/python3 zsh scripts/build-app.sh
 ```
 
 Готовый пакет появится по адресу `build/Островок удобства.app`. Локальная сборка по умолчанию использует безопасную временную ad-hoc подпись и включает hardened runtime. Скрипт не создаёт ключи или доверенные сертификаты. Если у вас уже есть собственная подпись разработчика, её можно выбрать явно:
 
 ```sh
-CONVENIENCE_ISLAND_SIGNING_IDENTITY="Developer ID Application: …" ./scripts/build-app.sh
+CONVENIENCE_ISLAND_SIGNING_IDENTITY="Developer ID Application: …" zsh scripts/build-app.sh
 ```
 
 Для публичного распространения дополнительно потребуются полноценный Xcode, Developer ID и нотариализация Apple.
